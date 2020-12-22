@@ -1,0 +1,84 @@
+= Jib-Skaffold
+v1.0, 2020-11-14
+:toc:
+:example-caption!:
+:sectnums:
+:sectnumlevels: 8
+:icons: font
+:source-highlighter: prettify
+
+== Prerequisites
+- Update ~/.m2/settings.xml
+[source]
+<servers>
+  <server>
+    <id>registry.hub.docker.com</id>
+    <username>usr</username>
+    <password>pwd</password>
+  </server>
+</servers>
+
+- Create a repository on link:https://hub.docker.com/repositories[docker hub] (For this case I created a repository with the name *arturix/spring-jib-app*)
+
+== Maven
+
+- The same repository name *arturix/spring-jib-app* should be used in maven pom.xml
+
+.pom.xml
+----
+include::pom.xml[tag=myTag,indent=0]
+----
+
+- Let's push the image *arturix/spring-jib-app* to docker hub with the help of Jib
+[source]
+mvn package && mvn jib:build
+
+
+== Kubernetes
+
+- Start Kubernetes(minikube)
+[source]
+minikube config set vm-driver virtualbox
+minikube start
+eval $(minikube docker-env)
+
+- Deploy *arturix/spring-jib-app* image on Kubernetes(minikube)
+[source]
+kubectl apply -f devops/jib.yaml
+
+[source,yaml,indent=0]
+.devops/jib.yaml
+----
+include::devops/jib.yaml[]
+----
+
+- Let's check *arturix/spring-jib-app* on Kubernetes(minikube)
+[source]
+curl $(minikube service spring-jib-app-ext-svc --url)
+
+== Skaffold
+
+- Create skaffold.yml, *spring-jib-skaffold-app* has to be used for build.artifact.image and *devops/jib-skaffold.yml* for deploy.kubectl.manifest
+
+.skaffold.yml
+----
+include::skaffold.yml[]
+----
+
+- Start Kubernetes(minikube)
+[source]
+minikube start
+
+- Run scaffold in development mode
+[source]
+skaffold dev --trigger notify
+
+- Development with skaffold on IntelliJ ("Kubernetes" and "Cloud Code" plugins for Intellij are needed)
+[source]
+Run -> Edit Configurations... --> (+)Add new configuration --> Cloud Code: Kubernetes
+
+- Let's look what we have
+[source]
+curl $(minikube service spring-jib-skaffold-app-service --url)
+
+== TODO: deploy docker image with jib on amazon
