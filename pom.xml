@@ -52,6 +52,9 @@
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>2.7.0</version>
 				<configuration>
+					<container>
+						<creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+					</container>
 					<to>
 						<image>registry.hub.docker.com/arturix/spring-jib-app</image>
 <!--						<credHelper>ecr-login</credHelper>-->
