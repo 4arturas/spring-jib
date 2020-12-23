@@ -54,7 +54,11 @@
 				<configuration>
 					<to>
 						<image>registry.hub.docker.com/arturix/spring-jib-app</image>
-						<credHelper>ecr-login</credHelper>
+<!--						<credHelper>ecr-login</credHelper>-->
+						<auth>
+							<username>${env.REGISTRY_USERNAME}</username>
+							<password>${env.REGISTRY_PASSWORD}</password>
+						</auth>
 					</to>
 				</configuration>
 			</plugin>
