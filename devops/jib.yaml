@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
         - name: spring-jib-app
-#          image: arturix/spring-jib-app:latest
-          image: 232766839285.dkr.ecr.us-east-2.amazonaws.com/spring-jib-app
+          image: arturix/spring-jib-app:latest
+#          image: 232766839285.dkr.ecr.us-east-2.amazonaws.com/spring-jib-app
           ports:
             - containerPort: 80
 ---
